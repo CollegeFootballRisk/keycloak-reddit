@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.keycloak.social.discord;
+package org.keycloak.social.reddit;
 
 import org.keycloak.broker.oidc.mappers.AbstractJsonUserAttributeMapper;
 
@@ -24,9 +24,9 @@ import org.keycloak.broker.oidc.mappers.AbstractJsonUserAttributeMapper;
  *
  * @author dannyAAM
  */
-public class DiscordUserAttributeMapper extends AbstractJsonUserAttributeMapper {
+public class RedditUserAttributeMapper extends AbstractJsonUserAttributeMapper {
 
-    private static final String[] cp = new String[]{DiscordIdentityProviderFactory.PROVIDER_ID};
+    private static final String[] cp = new String[]{RedditIdentityProviderFactory.PROVIDER_ID};
 
     @Override
     public String[] getCompatibleProviders() {
@@ -35,7 +35,7 @@ public class DiscordUserAttributeMapper extends AbstractJsonUserAttributeMapper 
 
     @Override
     public String getId() {
-        return "discord-user-attribute-mapper";
+        return "reddit-user-attribute-mapper";
     }
 
 }

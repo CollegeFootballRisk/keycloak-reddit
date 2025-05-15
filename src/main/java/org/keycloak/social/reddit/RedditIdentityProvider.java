@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.keycloak.social.discord;
+package org.keycloak.social.reddit;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.ws.rs.core.Response;
@@ -34,21 +34,21 @@ import org.keycloak.services.messages.Messages;
 import java.util.Set;
 
 /**
- * @author <a href="mailto:wadahiro@gmail.com">Hiroyuki Wada</a>
+ * @author <a href="mailto:mautam@usa.com">Mautam</a>
  */
-public class DiscordIdentityProvider extends AbstractOAuth2IdentityProvider<DiscordIdentityProviderConfig>
-        implements SocialIdentityProvider<DiscordIdentityProviderConfig> {
+public class RedditIdentityProvider extends AbstractOAuth2IdentityProvider<RedditIdentityProviderConfig>
+        implements SocialIdentityProvider<RedditIdentityProviderConfig> {
 
-    private static final Logger log = Logger.getLogger(DiscordIdentityProvider.class);
+    private static final Logger log = Logger.getLogger(RedditIdentityProvider.class);
 
-    public static final String AUTH_URL = "https://discord.com/oauth2/authorize";
-    public static final String TOKEN_URL = "https://discord.com/api/oauth2/token";
-    public static final String PROFILE_URL = "https://discord.com/api/users/@me";
-    public static final String GROUP_URL = "https://discord.com/api/users/@me/guilds";
-    public static final String DEFAULT_SCOPE = "identify email";
-    public static final String GUILDS_SCOPE = "guilds";
+    public static final String AUTH_URL = "https://www.reddit.com/api/v1/authorize";
+    public static final String TOKEN_URL = "https://www.reddit.com/api/v1/access_token";
+    public static final String PROFILE_URL = "https://reddit.com/api/v1/me";
+    public static final String GROUP_URL = "https://reddit.com/api/v1/subreddits/mine/moderator";
+    public static final String DEFAULT_SCOPE = "identity";
+    public static final String GUILDS_SCOPE = "mysubreddits";
 
-    public DiscordIdentityProvider(KeycloakSession session, DiscordIdentityProviderConfig config) {
+    public RedditIdentityProvider(KeycloakSession session, RedditIdentityProviderConfig config) {
         super(session, config);
         config.setAuthorizationUrl(AUTH_URL);
         config.setTokenUrl(TOKEN_URL);
@@ -69,15 +69,12 @@ public class DiscordIdentityProvider extends AbstractOAuth2IdentityProvider<Disc
     protected BrokeredIdentityContext extractIdentityFromProfile(EventBuilder event, JsonNode profile) {
         BrokeredIdentityContext user = new BrokeredIdentityContext(getJsonProperty(profile, "id"), getConfig());
 
-        String username = getJsonProperty(profile, "username");
-        String discriminator = getJsonProperty(profile, "discriminator");
+        String username = getJsonProperty(profile, "name");
+        String id = getJsonProperty(profile, "id");
 
-        if (!"0".equals(discriminator)) {
-            username += "#" + discriminator;
-        }
 
         user.setUsername(username);
-        user.setEmail(getJsonProperty(profile, "email"));
+        //user.setEmail(getJsonProperty(profile, "email"));
         user.setIdp(this);
 
         AbstractJsonUserAttributeMapper.storeUserProfileForMapper(user, profile, getConfig().getAlias());
@@ -92,7 +89,7 @@ public class DiscordIdentityProvider extends AbstractOAuth2IdentityProvider<Disc
         try {
             profile = SimpleHttp.doGet(PROFILE_URL, session).header("Authorization", "Bearer " + accessToken).asJson();
         } catch (Exception e) {
-            throw new IdentityBrokerException("Could not obtain user profile from discord.", e);
+            throw new IdentityBrokerException("Could not obtain user profile from reddit.", e);
         }
 
         if (getConfig().hasAllowedGuilds()) {
@@ -115,7 +112,7 @@ public class DiscordIdentityProvider extends AbstractOAuth2IdentityProvider<Disc
             }
             return false;
         } catch (Exception e) {
-            throw new IdentityBrokerException("Could not obtain guilds the current user is a member of from discord.", e);
+            throw new IdentityBrokerException("Could not obtain subreddits the current user is a moderator of from reddit.", e);
         }
     }
 

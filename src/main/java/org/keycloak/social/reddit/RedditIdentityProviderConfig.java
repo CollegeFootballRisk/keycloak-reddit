@@ -15,10 +15,11 @@
  * limitations under the License.
  */
 
-package org.keycloak.social.discord;
+package org.keycloak.social.reddit;
 
 import org.keycloak.broker.oidc.OAuth2IdentityProviderConfig;
 import org.keycloak.models.IdentityProviderModel;
+import org.keycloak.protocol.oidc.OIDCLoginProtocol;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -26,15 +27,16 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * @author <a href="mailto:wadahiro@gmail.com">Hiroyuki Wada</a>
+ * @author <a href="mailto:mautam@usa.com">Mautamu</a>
  */
-public class DiscordIdentityProviderConfig extends OAuth2IdentityProviderConfig {
+public class RedditIdentityProviderConfig extends OAuth2IdentityProviderConfig {
 
-    public DiscordIdentityProviderConfig(IdentityProviderModel model) {
+    public RedditIdentityProviderConfig(IdentityProviderModel model) {
         super(model);
     }
 
-    public DiscordIdentityProviderConfig() {
+    public RedditIdentityProviderConfig() {
+      getConfig().put("clientAuthMethod",OIDCLoginProtocol.CLIENT_SECRET_BASIC);
     }
 
     public String getAllowedGuilds() {

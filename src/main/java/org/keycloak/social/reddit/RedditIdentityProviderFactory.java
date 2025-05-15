@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.keycloak.social.discord;
+package org.keycloak.social.reddit;
 
 import org.keycloak.broker.provider.AbstractIdentityProviderFactory;
 import org.keycloak.broker.social.SocialIdentityProviderFactory;
@@ -29,24 +29,24 @@ import java.util.List;
 /**
  * @author <a href="mailto:wadahiro@gmail.com">Hiroyuki Wada</a>
  */
-public class DiscordIdentityProviderFactory extends AbstractIdentityProviderFactory<DiscordIdentityProvider>
-        implements SocialIdentityProviderFactory<DiscordIdentityProvider> {
+public class RedditIdentityProviderFactory extends AbstractIdentityProviderFactory<RedditIdentityProvider>
+        implements SocialIdentityProviderFactory<RedditIdentityProvider> {
 
-    public static final String PROVIDER_ID = "discord";
+    public static final String PROVIDER_ID = "reddit";
 
     @Override
     public String getName() {
-        return "Discord";
+        return "Reddit";
     }
 
     @Override
-    public DiscordIdentityProvider create(KeycloakSession session, IdentityProviderModel model) {
-        return new DiscordIdentityProvider(session, new DiscordIdentityProviderConfig(model));
+    public RedditIdentityProvider create(KeycloakSession session, IdentityProviderModel model) {
+        return new RedditIdentityProvider(session, new RedditIdentityProviderConfig(model));
     }
 
     @Override
-    public DiscordIdentityProviderConfig createConfig() {
-        return new DiscordIdentityProviderConfig();
+    public RedditIdentityProviderConfig createConfig() {
+        return new RedditIdentityProviderConfig();
     }
 
     @Override
