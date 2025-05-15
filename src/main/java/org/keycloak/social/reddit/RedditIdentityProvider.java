@@ -30,6 +30,7 @@ import org.keycloak.events.EventBuilder;
 import org.keycloak.models.KeycloakSession;
 import org.keycloak.services.ErrorPageException;
 import org.keycloak.services.messages.Messages;
+import org.keycloak.protocol.oidc.OIDCLoginProtocol;
 
 import java.util.Set;
 
@@ -43,8 +44,8 @@ public class RedditIdentityProvider extends AbstractOAuth2IdentityProvider<Reddi
 
     public static final String AUTH_URL = "https://www.reddit.com/api/v1/authorize";
     public static final String TOKEN_URL = "https://www.reddit.com/api/v1/access_token";
-    public static final String PROFILE_URL = "https://reddit.com/api/v1/me";
-    public static final String GROUP_URL = "https://reddit.com/api/v1/subreddits/mine/moderator";
+    public static final String PROFILE_URL = "https://oauth.reddit.com/api/v1/me";
+    public static final String GROUP_URL = "https://oauth.reddit.com/api/v1/subreddits/mine/moderator";
     public static final String DEFAULT_SCOPE = "identity";
     public static final String GUILDS_SCOPE = "mysubreddits";
 
@@ -53,6 +54,7 @@ public class RedditIdentityProvider extends AbstractOAuth2IdentityProvider<Reddi
         config.setAuthorizationUrl(AUTH_URL);
         config.setTokenUrl(TOKEN_URL);
         config.setUserInfoUrl(PROFILE_URL);
+        config.setClientAuthMethod(OIDCLoginProtocol.CLIENT_SECRET_BASIC);
     }
 
     @Override
